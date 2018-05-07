@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    {{#each jsAssets}}
+      <script src="{{path}}"></script>
+    {{/each}}
+    {{#each cssAssets}}
+      <link href="{{path}}" rel="stylesheet"  />
+    {{/each}}
+  </head>
+  <body>
+    <header class="doc-header">
+      <img src="//via.placeholder.com/60x60" class="doc-logo" />
+      <span>Doc-Easy</span>
+    </header>
+    <div class="doc-layout">
+      <!-- SIDEBAR -->
+      <nav class="doc-layout-sidebar sidebar_open">
+        <!-- MENU -->
+        <ul class="doc-menu">
+          <!-- CSS Section -->
+          {{#each plugged.menu}}
+          <li data-section="{{name}}">
+            <ul class="doc-menu-list">
+              <li class="doc-menu-title">{{name}}</li>
+              <!-- Loop through each CSS group -->
+              {{#each items}}
+              <li class="doc-menu-section">
+                {{#if name}}<span class="doc-menu-group">{{name}}</span>{{/if}}
+                <ul class="doc-menu-list">
+                  <!-- Loop through each @name found in current CSS group -->
+                  {{#items}}
+                  <li class="doc-menu-item">
+                    <a class="doc-menu-link" href="{{path}}">{{name}}</a>
+                  </li>
+                  {{/items}}
+                </ul>
+              </li>
+              {{/each}}
+            </ul>
+          </li>
+          {{/each}}
+        </ul>
+      </nav>
+
+      <!-- CONTENT AREA -->
+      <section class="doc-layout-content">
+        <section class="doc-object">
+          <h1 class="doc-object-name">{{title}}</h1>
+          <div class="doc-object-description">
+            {{description}}
+          </div>
+          <!-- @example Block -->
+          {{#examples}}
+          <div class="doc-codeExample">
+            <h3 class="doc-codeExample-title">
+              {{title}}
+            </h3>
+            <div class="doc-codeExample-description">
+              {{description}}
+            </div>
+            <div class="doc-codeExample-render">
+              {{{code}}}
+            </div>
+            <div class="doc-codeExample-code">
+              <pre>
+                <code>
+                  {{code}}
+                </code>
+              </pre>
+            </div>
+          </div>
+          {{/examples}}
+          <!-- end @example Block -->
+        </section>
+
+        {{#if properties}}
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Option</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- loop through each row in the @options block -->
+            {{#properties}}
+            <tr>
+              <td>
+                <code>{{title}}</code>
+              </td>
+              <td>{{type}}</td>
+              <td>{{description}}</td>
+            </tr>
+            {{/properties}}
+            <!-- end loop -->
+          </tbody>
+        </table>
+        {{/if}}
+      </section>
+    </div>
+  </body>
+</html>
