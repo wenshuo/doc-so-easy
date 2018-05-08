@@ -1,4 +1,5 @@
 const path = require('path');
+const MenuPlugin = require('../src/plugins/menu');
 
 module.exports = {
   files: ['demo/**/*.doc.js'],
@@ -26,6 +27,11 @@ module.exports = {
     }
   },
   outDir: path.resolve(__dirname, '../public'),
-  parsers: {},
-  plugins: []
+  outputFilePath(meta) {
+    if (!meta.category) {
+      return meta.name ? `${meta.name.toLowerCase()}.html` : '';
+    }
+    return `${meta.category.toLowerCase()}/${meta.subcategory.toLowerCase()}/${meta.name.toLowerCase()}.html`;
+  },
+  plugins: [MenuPlugin]
 };

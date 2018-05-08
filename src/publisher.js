@@ -7,7 +7,6 @@ const defaultParsers = require('../src/parsers');
 const Template = require('../src/template');
 const Transformer = require('../src/transformer');
 const PluginProcessor = require('../src/Plugins');
-const Helper = require('../src/helper');
 
 class Publisher {
   constructor(config) {
@@ -72,7 +71,7 @@ class Publisher {
   }
 
   processFiles(filesToUpdate, filesToDelete, changedOnWatch) {
-    const { outDir, verbose } = this.config;
+    const { outDir, verbose, outputFilePath } = this.config;
 
     this.allFileMeta = this.allFileMeta || new Map();
     // remove meta for deleted files
@@ -106,8 +105,9 @@ class Publisher {
       file.jsAssets = templateAssets.js;
       file.cssAssets = templateAssets.css;
       const doc = Transformer.transform(this.template.getTemplate(templateName), file);
-      const outputPath = Helper.outputPath(file);
-      const outputFilename = Helper.outputFilename(file);
+      const outputFilename = outputFilePath(file);
+      const outputPath = path.dirname(outputFilename);
+
       if (outputFilename) {
         fs.ensureDirSync(path.resolve(outDir, outputPath));
         fs.writeFileSync(path.resolve(outDir, outputFilename), doc, 'utf8');
@@ -115,7 +115,7 @@ class Publisher {
           console.log(`${changedOnWatch ? 'Rew' : 'W'}riting: ${path.resolve(outDir, outputFilename)}`);
         }
       } else if (verbose) {
-        console.log(`File: ${file.filePath} is missing either name, category, or subcategory field.`);
+        console.log(`File: ${file.filePath} does not have a valid output path.`);
       }
     });
   }

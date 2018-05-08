@@ -1,5 +1,4 @@
-const menuPlugin = require('./Menu');
-const defaultPlugins = [menuPlugin];
+const defaultPlugins = [];
 
 class PluginProcessor {
   constructor(plugins = []) {

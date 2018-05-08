@@ -17,4 +17,10 @@ config.templates = Object.assign({
     }
   }
 }, config.templates || {});
+
+function defaultFilePath(fileMeta) {
+  return `${path.basename(fileMeta.filePath, '.doc.js')}.html`;
+}
+
+config.outputFilePath = config.outputFilePath || defaultFilePath;
 module.exports = config;
