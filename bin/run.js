@@ -1,62 +1,41 @@
 #!/usr/bin/env node
-
-const path = require('path');
-const fs = require('fs-extra');
+const sane = require('sane');
 const appRoot = require('app-root-path');
-const args = require('../src/CliArgs')();
-const glob = require('glob');
-const config = require(path.resolve(appRoot.toString(), args.options.config));
-const filePattern = config.files;
-const defaultParsers = require('../src/parsers');
-const Template = require('../src/Template');
-const Transformer = require('../src/Transformer');
-const PluginProcessor = require('../src/Plugins');
-const Helper = require('../src/Helper');
-const pluginProcessor = new PluginProcessor(config.plugins);
-const parsers = Object.assign({}, defaultParsers, config.parsers || {});
-const template = new Template(config.template);
-const parsedFiles = Object.keys(filePattern).reduce((memo, key) => {
-  const files = glob.sync(filePattern[key]);
-  const Parser = parsers[key];
-  if (!Parser) {
-    throw new Error(`We don't find this parser: ${key}`);
-  }
-  memo = memo.concat(files.map(f => {
-    const parsedFile = Parser.execute(path.resolve(appRoot.toString(), f));
-    return pluginProcessor.transform(parsedFile);
-  }));
-  return memo;
-}, []);
+const Publisher = require('../src/publisher');
+const config = require('../src/config');
+const TaskQueue = require('../src/task_queue');
+const tasks = new TaskQueue();
+const publisher = new Publisher(config);
 
-const pluginData = pluginProcessor.publish(parsedFiles);
-// process assets
-fs.ensureDirSync(`${appRoot}/${config.outDir}/assets`);
+publisher.execute();
 
-const templateAssets = Object.keys(config.assets).reduce((memo, type) => {
-  memo[type] = config.assets[type].map((asset) => {
-    if (asset.copy) {
-      try {
-        fs.copySync(asset.path, `${config.outDir}/assets/${path.basename(asset.path)}`);
-      } catch (e) {
-        console.log(e);
+if(config.watch) {
+  const watcher = sane(appRoot.toString(), { glob: config.files });
+  // TODO batch file changes for some time interval
+  watcher.on('change', (filePath) => {
+    tasks.push({
+      name: `change: ${filePath}`,
+      fn: () => {
+        return publisher.processFiles([filePath], [], true);
       }
-    }
-    return {
-      path: asset.copy ? `/assets/${path.basename(asset.path)}`: asset.path
-    };
+    });
   });
-  return memo;
-}, {});
 
-const docs = parsedFiles.map((file) => {
-  if (pluginData) {
-    file.plugged = pluginData;
-  }
-  file.jsAssets = templateAssets.js;
-  file.cssAssets = templateAssets.css;
-  const doc = Transformer.transform(template.docTemplate, file);
-  const outputPath = Helper.outputPath(file);
-  const outputFilename = Helper.outputFilename(file);
-  fs.ensureDirSync(path.resolve(config.outDir, outputPath));
-  fs.writeFileSync(path.resolve(config.outDir, outputFilename), doc, 'utf8');
-});
+  watcher.on('add', (filePath) => {
+    tasks.push({
+      name: `add: ${filePath}`,
+      fn: () => {
+        return publisher.processFiles([filePath], [], true);
+      }
+    });
+  });
+
+  watcher.on('delete', (filePath) => {
+    tasks.push({
+      name: `delete: ${filePath}`,
+      fn: () => {
+        return publisher.processFiles([], [filePath], true);
+      }
+    });
+  });
+}

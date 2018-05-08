@@ -10,7 +10,7 @@ class Helper {
 
   static outputFilename(meta) {
     if (!meta.category) {
-      return `${meta.name.toLowerCase()}.html`;
+      return meta.name ? `${meta.name.toLowerCase()}.html` : '';
     }
     return `${meta.category.toLowerCase()}/${meta.subcategory.toLowerCase()}/${meta.name.toLowerCase()}.html`;
   }

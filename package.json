@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "demo": "doc_easy --config=demo/doc_easy.config.js"
+    "demo": "nodemon demo/server.js"
   },
   "bin": {
     "doc_easy": "./bin/run.js"
@@ -19,9 +19,11 @@
     "fs-extra": "^6.0.0",
     "glob": "^7.1.2",
     "handlebars": "^4.0.11",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "sane": "^2.5.1"
   },
   "devDependencies": {
-    "http-server": "^0.11.1"
+    "express": "^4.16.3",
+    "nodemon": "^1.17.4"
   }
 }

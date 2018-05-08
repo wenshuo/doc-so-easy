@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'icon',
+  name: 'icons',
   category: 'css',
   subcategory: 'components',
   title: 'icon Component',

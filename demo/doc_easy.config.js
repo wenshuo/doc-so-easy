@@ -1,25 +1,31 @@
 const path = require('path');
 
 module.exports = {
-  files: {
-    simple: 'demo/**/*.doc.js'
-  },
-  template: path.resolve(__dirname, '../template/template.html'),
-  assets: {
-    js: [
-      {
-        copy: true,
-        path: path.resolve(__dirname, '../template/assets/home.js')
+  files: ['demo/**/*.doc.js'],
+  templates: {
+    index: {
+      path: path.resolve(__dirname, '../template/index.html'),
+      assets: {
+        js: [
+          {
+            copy: true,
+            path: path.resolve(__dirname, '../template/assets/link_toggle.js')
+          },
+          {
+            copy: true,
+            path: path.resolve(__dirname, '../template/assets/reload.js')
+          }
+        ],
+        css: [
+          {
+            copy: true,
+            path: path.resolve(__dirname, '../template/assets/template.css')
+          }
+        ]
       }
-    ],
-    css: [
-      {
-        copy: true,
-        path: path.resolve(__dirname, '../template/assets/template.css')
-      }
-    ]
+    }
   },
-  outDir: path.resolve(__dirname, '../docs'),
+  outDir: path.resolve(__dirname, '../public'),
   parsers: {},
   plugins: []
 };
