@@ -1,8 +1,8 @@
-# Doc-easy
+# Doc-so-easy
 A tool for building documentation with ease.
 
 ### Tool Config
-Doc-easy config is nodejs module export. Specify the config path when run doc-easy.
+Doc-so-easy config is nodejs module export. Specify the config path when run doc-so-easy.
 Example:
 ```
 const plugin1 = require('Plugin1');
@@ -44,13 +44,13 @@ module.exports = {
   Array of glob patterns to match files that contain documentation info.
 
 #### templates:
-  templates to use. The key is the name of the template, which is used in a documentation file to specify template for that file. The value is an object containing meta for the template. The path is the absolute path to the template file. Currently Doc-easy only support handlebars templates. The assets field contain js and css assets for the template. Each js and css asset config contains copy and path options. When copy is true, the asset will be copied to the directory specified in the outDir option. The path for an asset must be absolute path to file in your file system or any valid url.
+  templates to use. The key is the name of the template, which is used in a documentation file to specify template for that file. The value is an object containing meta for the template. The path is the absolute path to the template file. Currently Doc-so-easy only support handlebars templates. The assets field contain js and css assets for the template. Each js and css asset config contains copy and path options. When copy is true, the asset will be copied to the directory specified in the outDir option. The path for an asset must be absolute path to file in your file system or any valid url.
 
 #### outDir
   Path to directory for output files and assets.
 
 #### outputFilePath
-  By default, Doc-easy will output all files to the directory specified  by outDir.
+  By default, Doc-so-easy will output all files to the directory specified  by outDir.
   If we want to organize the output files in a custom structure, specify the outputFilePath function.
   The function will receive the meta data of a file and should return a path(including the file name).
 
@@ -129,7 +129,7 @@ Watch mode.
 Display debug information.
 
 ```
-doc-easy --config=path-to-config --watch --verbose
+doc_so_easy --config=path-to-config --watch --verbose
 ```
 
 ### Demo

@@ -1,5 +1,5 @@
 {
-  "name": "doc-easy",
+  "name": "doc-so-easy",
   "version": "1.0.0",
   "description": "documentation tool that read from js format",
   "main": "index.js",
@@ -9,7 +9,7 @@
     "build": "node bin/run.js --config=demo/doc_easy.config.js --watch=demo --verbose"
   },
   "bin": {
-    "doc_easy": "./bin/run.js"
+    "doc_so_easy": "./bin/run.js"
   },
   "engines": {
     "node": ">=9.3.0"
