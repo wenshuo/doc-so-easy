@@ -18,8 +18,10 @@
           break;
         }
       }
-      goTo(link);
-      currentActiveLink.className = 'doc-menu-item active';
+      if (currentActiveLink) {
+        goTo(link);
+        currentActiveLink.className = 'doc-menu-item active';
+      }
     }
 
     for (var i = 0;i < links.length;i += 1) {

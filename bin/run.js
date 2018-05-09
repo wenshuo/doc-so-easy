@@ -10,7 +10,8 @@ const publisher = new Publisher(config);
 publisher.execute();
 
 if(config.watch) {
-  const watcher = sane(appRoot.toString(), { glob: config.files });
+  // TODO get rid of poll
+  const watcher = sane(appRoot.toString(), { glob: config.files, poll: true });
   // TODO batch file changes for some time interval
   watcher.on('change', (filePath) => {
     tasks.push({
