@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs-extra');
-const appRoot = require('app-root-path');
 const glob = require('glob');
 const _ = require('lodash');
 const Template = require('../src/template');
@@ -47,7 +46,7 @@ class Publisher {
       // use default parser to parse js file
       // TODO support custom parser
       const Parser = this.config.useParser(file);
-      const parsedFile = Parser.execute(path.resolve(appRoot.toString(), file));
+      const parsedFile = Parser.execute(path.resolve(this.config.baseFileDirectory, file));
       return {
         path: file,
         data: this.pluginProcessor.transform(parsedFile)
@@ -57,7 +56,7 @@ class Publisher {
 
   getFiles() {
     return this.config.files.reduce((memo, pattern) => {
-      memo = memo.concat(glob.sync(pattern));
+      memo = memo.concat(glob.sync(pattern, { cwd : this.config.baseFileDirectory }));
       return memo;
     }, []);
   }

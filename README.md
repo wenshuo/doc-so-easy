@@ -122,7 +122,7 @@ module.exports = {
 #### --config or -c
 Path to config file.
 
-#### --watch or -w
+#### --watch or --watch=directory-to-watch or -w
 Watch mode.
 
 #### --verbose or -v

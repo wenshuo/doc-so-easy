@@ -2,7 +2,7 @@ module.exports = {
   name: 'alert',
   category: 'js',
   subcategory: 'components',
-  title: 'Alert React Component 1',
+  title: 'Alert React Component yay',
   description: 'Html Alert component.',
   examples: [
     {

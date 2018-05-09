@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "demo:server": "nodemon -e html,js,css --watch public demo/server.js",
-    "build:doc": "node bin/run.js --config=demo/doc_easy.config.js --watch --verbose"
+    "build:doc": "node bin/run.js --config=demo/doc_easy.config.js --watch=demo --verbose"
   },
   "bin": {
     "doc_easy": "./bin/run.js"

@@ -11,9 +11,9 @@ argv.option([
   {
     name: 'watch',
     short: 'w',
-    type: 'boolean',
+    type: 'string',
     description: 'watch mode',
-    example: "'script --watch' or 'script -w'"
+    example: "'script --watch directory' or 'script -w directory'"
   },
   {
     name: 'verbose',

@@ -2,7 +2,7 @@ const path = require('path');
 const MenuPlugin = require('../src/plugins/menu');
 
 module.exports = {
-  files: ['demo/**/*.doc.js'],
+  files: ['**/*.doc.js'],
   templates: {
     'default': {
       path: path.resolve(__dirname, './template/default.html'),

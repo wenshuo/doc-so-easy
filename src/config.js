@@ -13,4 +13,17 @@ function defaultUseParser() {
 }
 config.useParser = config.useParser || defaultUseParser;
 config.outputFilePath = config.outputFilePath || defaultFilePath;
+
+let directoryToWatch;
+
+if (config.watch === 'true') {
+  // Watch root directory if watch mode is on but no directory is specified.
+  directoryToWatch = appRoot.toString();
+} else if (!!config.watch) {
+  directoryToWatch = path.resolve(appRoot.toString(), config.watch);
+}
+
+config.directoryToWatch = directoryToWatch;
+config.baseFileDirectory = directoryToWatch || appRoot.toString();
+
 module.exports = config;
