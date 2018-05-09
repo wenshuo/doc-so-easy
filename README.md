@@ -32,6 +32,9 @@ module.exports = {
       }
     }
   },
+  useParser(filePath) {
+    return parser;
+  },
   outDir: absolute-path-to-output-directory,
   plugins: [plugin1, plugin2]
 };
@@ -50,6 +53,11 @@ module.exports = {
   By default, Doc-easy will output all files to the directory specified  by outDir.
   If we want to organize the output files in a custom structure, specify the outputFilePath function.
   The function will receive the meta data of a file and should return a path(including the file name).
+
+#### useParser
+  Specify what parser to use for a file. By default, it use simple parser to parse all files.
+  Add useParser option tto use custom parsers. useParser function receive file path as argument,
+  and must return a parser. See the custom parser section for more details.
 
 #### plugins
   Array of plugins for processing documentation meta thus impacting the final output. A plugin is an object that must contain a name, and can have either a transform or publish method or both. The transform method receive the meta data object for a file and could transform any meta and must return a new meta data object. The transform method is called before writing any output html files. The publish method receive an array of meta data objects for all files matched the glob pattern defined in the files option, it should return any information needed for generating html files, and the returned info is included into the meta that passed to the handlebars template for compilation.

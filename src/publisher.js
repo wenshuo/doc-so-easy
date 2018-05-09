@@ -3,7 +3,6 @@ const fs = require('fs-extra');
 const appRoot = require('app-root-path');
 const glob = require('glob');
 const _ = require('lodash');
-const defaultParsers = require('../src/parsers');
 const Template = require('../src/template');
 const Transformer = require('../src/transformer');
 const PluginProcessor = require('../src/Plugins');
@@ -13,7 +12,6 @@ class Publisher {
     this.config = config;
     this.pluginProcessor = new PluginProcessor(config.plugins);
     this.template = new Template(config);
-    this.parsers = Object.assign({}, defaultParsers, config.parsers || {});
   }
 
   prepare() {
@@ -48,7 +46,7 @@ class Publisher {
     return files.map((file) => {
       // use default parser to parse js file
       // TODO support custom parser
-      const Parser = this.parsers.simple;
+      const Parser = this.config.useParser(file);
       const parsedFile = Parser.execute(path.resolve(appRoot.toString(), file));
       return {
         path: file,
