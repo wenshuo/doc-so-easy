@@ -131,3 +131,11 @@ Display debug information.
 ```
 doc-easy --config=path-to-config --watch --verbose
 ```
+
+### Demo
+To see demo locally, run
+```
+yarn build
+yarn server
+```
+then navigate to localhost:3000

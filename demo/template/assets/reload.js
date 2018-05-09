@@ -1,11 +1,7 @@
 (function() {
-  var reload = false;
-
   setInterval(function() {
-    var url = !reload ? `/reload/yes` : '/reload/no';
-    reload = true;
     console.log('check if reload is needed.');
-    fetch(url, {
+    fetch('/reload', {
       method: 'GET'
     })
     .then((res) => res.json())
