@@ -5,7 +5,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "demo": "nodemon demo/server.js"
+    "demo:server": "nodemon -e html,js,css --watch public demo/server.js",
+    "build:doc": "node bin/run.js --config=demo/doc_easy.config.js --watch --verbose"
   },
   "bin": {
     "doc_easy": "./bin/run.js"

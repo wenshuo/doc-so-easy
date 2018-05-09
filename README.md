@@ -46,6 +46,11 @@ module.exports = {
 #### outDir
   Path to directory for output files and assets.
 
+#### outputFilePath
+  By default, Doc-easy will output all files to the directory specified  by outDir.
+  If we want to organize the output files in a custom structure, specify the outputFilePath function.
+  The function will receive the meta data of a file and should return a path(including the file name).
+
 #### plugins
   Array of plugins for processing documentation meta thus impacting the final output. A plugin is an object that must contain a name, and can have either a transform or publish method or both. The transform method receive the meta data object for a file and could transform any meta and must return a new meta data object. The transform method is called before writing any output html files. The publish method receive an array of meta data objects for all files matched the glob pattern defined in the files option, it should return any information needed for generating html files, and the returned info is included into the meta that passed to the handlebars template for compilation.
 
@@ -60,6 +65,47 @@ module.exports = {
   publish(allFileMeta) {
     ...
     return data-to-use-by-template;
+  }
+}
+```
+
+### Documentation format
+The default parser expects documentation meta to be defined as javascript object.
+```
+icon.doc.js
+
+module.exports = {
+  name: 'Icon',
+  category: 'js',
+  subcategory: 'components',
+  description: 'Icon component.',
+  examples: [
+    {
+      title: 'example 1',
+      type: 'html',
+      description: 'icon example',
+      code: `
+        <Icon />
+      `
+    }
+  ]
+}
+```
+The meta can contain anything as long as the custom plugins and custom templates understand and able to consume.
+
+#### Custom parser
+Documentation meta can be specified in any format, comments, js objects or anything that can be parsed by a parser.
+
+A parser is an object that must contain a name and execute method.
+The execute method take the file path as argument and should return an object contains file meta data to be consumed by plugins and templates.
+
+```
+module.exports = {
+  name: 'comment parser',
+  execute(filePath) {
+    read file
+    parse comments
+    return object    
   }
 }
 ```

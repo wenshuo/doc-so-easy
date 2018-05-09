@@ -9,7 +9,7 @@ class Template {
     }, {});
   }
 
-  getTemplate(name) {
+  getTemplate(name = 'default') {
     return this.templates[name];
   }
 }
