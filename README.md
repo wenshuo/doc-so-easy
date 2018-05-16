@@ -1,5 +1,5 @@
 # Doc-so-easy
-A tool for building documentation with ease.
+A tool for building documentation without pain.
 
 ### Tool Config
 Doc-so-easy config is nodejs module export. Specify the config path when run doc-so-easy.
@@ -7,6 +7,7 @@ Example:
 ```
 const plugin1 = require('Plugin1');
 const plugin2 = require('Plugin2');
+const CommentParser = require('comment-parser');
 
 module.exports = {
   files: ['demo/**/*.doc.js'],
@@ -32,9 +33,7 @@ module.exports = {
       }
     }
   },
-  useParser(filePath) {
-    return parser;
-  },
+  parser: CommentParser,
   outDir: absolute-path-to-output-directory,
   plugins: [plugin1, plugin2]
 };
@@ -54,10 +53,8 @@ module.exports = {
   If we want to organize the output files in a custom structure, specify the outputFilePath function.
   The function will receive the meta data of a file and should return a path(including the file name).
 
-#### useParser
-  Specify what parser to use for a file. By default, it use simple parser to parse all files.
-  Add useParser option tto use custom parsers. useParser function receive file path as argument,
-  and must return a parser. See the custom parser section for more details.
+#### parser
+  Specify what parser to use. Doc-so-easy is shipped with two parsers, simple and comment parser. By default, it uses CommentParser to parse comments and extract documentation meta. The SimpleParser will just return meta specified as module export object. The parser option can either be a parser object or a function. The function style is useful when we want to specify different parsers for different files. The function will receive the current file path as argument and should return a parser object. See the custom parser section for more details.
 
 #### plugins
   Array of plugins for processing documentation meta thus impacting the final output. A plugin is an object that must contain a name, and can have either a transform or publish method or both. The transform method receive the meta data object for a file and could transform any meta and must return a new meta data object. The transform method is called before writing any output html files. The publish method receive an array of meta data objects for all files matched the glob pattern defined in the files option, it should return any information needed for generating html files, and the returned info is included into the meta that passed to the handlebars template for compilation.
@@ -78,10 +75,65 @@ module.exports = {
 ```
 
 ### Documentation format
-The default parser expects documentation meta to be defined as javascript object.
-```
-icon.doc.js
+The default CommentParser expects documentation meta to be defined as comments.
 
+```
+/**
+ * @name button
+ * @category react
+ * @subcategory components
+ * @title button
+ * @description
+ * This is a button react component.
+ *
+ * @examples
+ *   @title size: small
+ *   @type jsx
+ *   @description
+ *   small size button
+ *   @code
+ *   <UI.Button size="small" theme="primary">Small</UI.Button>
+ *
+ * @examples
+ *   @title size: medium
+ *   @type jsx
+ *   @description
+ *   Medium size button
+ *   @code
+ *   <UI.Button size="medium" theme="primary">Medium</UI.Button>
+ *
+ * @examples
+ *   @title size: large
+ *   @type jsx
+ *   @description
+ *   Large size button
+ *   @code
+ *   <UI.Button size="large" theme="primary">Large</UI.Button>
+ *
+ * @examples
+ *   @title theme: go
+ *   @type jsx
+ *   @description
+ *   Green button
+ *   @code
+ *   <UI.Button size="large" theme="go">Large</UI.Button>
+ *
+ * @properties
+ *   @title size
+ *   @type string
+ *   @description
+ *   button size
+ *
+ * @properties
+ *   @title theme
+ *   @type string
+ *   @description
+ *   button theme(primary or go)
+ */
+```
+
+The SimpleParser expects documentation meta to be specified as module export object.
+```
 module.exports = {
   name: 'Icon',
   category: 'js',
@@ -133,9 +185,16 @@ doc_so_easy --config=path-to-config --watch --verbose
 ```
 
 ### Demo
-To see demo locally, run
+To see demo locally, install dependencies
 ```
-yarn build
-yarn server
+yarn
+```
+
+then run the following commands
+
+```
+yarn demo:code
+yarn demo:doc
+yarn demo:server
 ```
 then navigate to localhost:3000

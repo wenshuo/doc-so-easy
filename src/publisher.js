@@ -41,17 +41,26 @@ class Publisher {
     this.templateAssets = templateAssets;
   }
 
+  getParser(config, file) {
+    if (typeof config.parser === 'function') {
+      return config.parser(file);
+    }
+
+    return config.parser;
+  }
+
   parseFiles(files) {
-    return files.map((file) => {
-      // use default parser to parse js file
-      // TODO support custom parser
-      const Parser = this.config.useParser(file);
+    return files.reduce((memo, file) => {
+      const Parser = this.getParser(this.config, file);
       const parsedFile = Parser.execute(path.resolve(this.config.baseFileDirectory, file));
-      return {
-        path: file,
-        data: this.pluginProcessor.transform(parsedFile)
-      };
-    });
+      if (parsedFile) {
+        memo.push({
+          path: file,
+          data: this.pluginProcessor.transform(parsedFile)
+        });
+      }
+      return memo;
+    }, []);
   }
 
   getFiles() {

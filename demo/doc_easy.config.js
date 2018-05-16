@@ -1,16 +1,33 @@
 const path = require('path');
 const MenuPlugin = require('../src/plugins/menu');
+const ExamplePlugin = require('./example_plugin');
 
 module.exports = {
-  files: ['**/*.doc.js'],
+  files: ['source/*.@(jsx|scss)'],
   templates: {
     'default': {
       path: path.resolve(__dirname, './template/default.html'),
       assets: {
+        js: [
+          {
+            copy: true,
+            path: path.resolve(__dirname, '../node_modules/react/umd/react.production.min.js')
+          },
+          {
+            copy: true,
+            path: path.resolve(__dirname, '../node_modules/react-dom/umd/react-dom.production.min.js')
+          },
+          {
+            path: 'http://localhost:8080/app.js'
+          }
+        ],
         css: [
           {
             copy: true,
             path: path.resolve(__dirname, './template/assets/template.css')
+          },
+          {
+            path: 'http://localhost:8080/index.css'
           }
         ]
       }
@@ -44,5 +61,5 @@ module.exports = {
     }
     return `${meta.category.toLowerCase()}/${meta.subcategory.toLowerCase()}/${meta.name.toLowerCase()}.html`;
   },
-  plugins: [MenuPlugin]
+  plugins: [MenuPlugin, ExamplePlugin]
 };
