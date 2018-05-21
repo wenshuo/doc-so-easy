@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Alegreya:900);
+
 * {
   box-sizing: border-box;
 }
@@ -21,7 +23,6 @@ iframe {
   color: #00c4df;
   font-size: 1.4rem;
   padding: 0.5rem;
-  cursor: pointer;
   border-bottom: 1px solid #e8eeef;
 }
 
@@ -221,4 +222,29 @@ iframe {
 .doc-table td {
   padding: 0.5rem 1rem;
   border-bottom: 2px solid #e8eeef;
+}
+
+.doc-logo {
+  font-size: 3rem;
+	color: orange;
+  font-family: 'Alegreya', serif;
+}
+
+.doc-logo-letter {
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+	text-transform: uppercase;
+	text-shadow: 0.04rem 0.04rem #000,
+         0.08rem 0.08rem #000,
+         0.12rem 0.12rem #000,
+         0.16rem 0.16rem #000,
+         0.20rem 0.20rem #000,
+         0.24rem 0.24rem #000,
+         0.28rem 0.28rem #000,
+         0.32rem 0.32rem #000,
+         0.36rem 0.36rem #000,
+         0.40rem 0.40rem #000;
+	-webkit-text-stroke-color: #000;
+	-webkit-text-stroke-width: 0.024rem;
 }
